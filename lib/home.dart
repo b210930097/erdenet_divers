@@ -14,6 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final String email = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -41,7 +42,9 @@ class _HomeState extends State<Home> {
                   onTap: () async {
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => const CheckListScreen()),
+                        builder: (context) =>
+                            CheckListScreen(email: email), // Pass email here
+                      ),
                     );
                     setState(() {});
                   },

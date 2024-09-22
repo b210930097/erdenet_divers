@@ -33,16 +33,10 @@ class _SignUpState extends State<SignUp> {
         color: Colors.white,
         child: Stack(
           children: [
-            Center(
-              child: SizedBox(
-                child: Image.asset("assets/background.jpg"),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(50),
-              child: Text(
-                'TH',
-                style: TextStyle(fontFamily: 'MySoul', fontSize: 50),
+            Positioned.fill(
+              child: Image.asset(
+                'assets/background.jpg',
+                fit: BoxFit.cover,
               ),
             ),
             Padding(

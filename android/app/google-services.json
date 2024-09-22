@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "941154206174",
+    "firebase_url": "https://erdenet-divers-default-rtdb.firebaseio.com",
     "project_id": "erdenet-divers",
     "storage_bucket": "erdenet-divers.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.erdenet.divers"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "941154206174-remln97bi2gsflialnbv3oq6h1vk688n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.erdenet.divers",
+            "certificate_hash": "6fd7743d473c58ce43c11564fba3eaf3c4186ece"
+          }
+        },
+        {
+          "client_id": "941154206174-lpaav27sa33cpqh36ktc42m7qgjj1rhi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBBATNpZ4yfO7xPTmKdXOSfPYOto8JLsVo"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "941154206174-lpaav27sa33cpqh36ktc42m7qgjj1rhi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "941154206174-o9fip6p00vqvoi31abp88gl91nlvhg5g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.erdenet.divers"
+              }
+            }
+          ]
         }
       }
     }

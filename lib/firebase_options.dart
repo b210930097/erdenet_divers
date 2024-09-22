@@ -35,31 +35,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAIUOfIEOIOVrpStMIyiNo7S91T0piQ2Ts',
-    appId: '1:174457943368:web:aae3567d7c2629b09f2f7d',
-    messagingSenderId: '174457943368',
-    projectId: 'onch-44aa5',
-    authDomain: 'onch-44aa5.firebaseapp.com',
-    storageBucket: 'onch-44aa5.appspot.com',
-    measurementId: 'G-252TVVGZPP',
-  );
+      apiKey: "AIzaSyDOACmuAO5NKLWFv0VAd97MjLogwzLsSvQ",
+      authDomain: "erdenet-divers.firebaseapp.com",
+      databaseURL: "https://erdenet-divers-default-rtdb.firebaseio.com",
+      projectId: "erdenet-divers",
+      storageBucket: "erdenet-divers.appspot.com",
+      messagingSenderId: "941154206174",
+      appId: "1:941154206174:web:7108dd38696af54783dd4f");
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBKvHm9qxlgHC1P-Z5FkM9799advWldwCM',
-    appId: '1:174457943368:android:46be6b725561a76f9f2f7d',
-    messagingSenderId: '174457943368',
-    projectId: 'onch-44aa5',
-    storageBucket: 'onch-44aa5.appspot.com',
+    apiKey: 'AIzaSyBBATNpZ4yfO7xPTmKdXOSfPYOto8JLsVo',
+    appId: '1:941154206174:android:eabe15270cda9df883dd4f',
+    messagingSenderId: '941154206174',
+    projectId: 'erdenet-divers',
+    storageBucket: 'erdenet-divers.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCpmpjaJGStf9tw1IBiUFgtThunG2zMHKc',
-    appId: '1:174457943368:ios:4d4b2e18fbaa87d09f2f7d',
-    messagingSenderId: '174457943368',
-    projectId: 'onch-44aa5',
-    storageBucket: 'onch-44aa5.appspot.com',
+    apiKey: 'AIzaSyARz9QUIOV-S59p67UWKjmihkNPHIIKpfY',
+    appId: '1:941154206174:ios:9ee54569699a770083dd4f',
+    messagingSenderId: '941154206174',
+    projectId: 'erdenet-divers',
+    storageBucket: 'erdenet-divers.appspot.com',
     iosClientId:
-        '174457943368-7fq2ra4qbtcs4dqhq845ub6o30eede4s.apps.googleusercontent.com',
-    iosBundleId: 'com.erdenet.onch',
+        '941154206174-remln97bi2gsflialnbv3oq6h1vk688n.apps.googleusercontent.com',
+    iosBundleId: 'com.erdenet.divers',
   );
 }

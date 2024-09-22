@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>941154206174-o9fip6p00vqvoi31abp88gl91nlvhg5g.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.941154206174-o9fip6p00vqvoi31abp88gl91nlvhg5g</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>941154206174-remln97bi2gsflialnbv3oq6h1vk688n.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyARz9QUIOV-S59p67UWKjmihkNPHIIKpfY</string>
 	<key>GCM_SENDER_ID</key>
@@ -26,5 +32,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:941154206174:ios:9ee54569699a770083dd4f</string>
+	<key>DATABASE_URL</key>
+	<string>https://erdenet-divers-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

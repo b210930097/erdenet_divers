@@ -36,16 +36,10 @@ class _SignInState extends State<SignIn> {
         color: Colors.white,
         child: Stack(
           children: [
-            Center(
-              child: SizedBox(
-                child: Image.asset("assets/background.jpg"),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(50),
-              child: Text(
-                'TH',
-                style: TextStyle(fontFamily: 'MySoul', fontSize: 50),
+            Positioned.fill(
+              child: Image.asset(
+                'assets/background.jpg',
+                fit: BoxFit.cover,
               ),
             ),
             Padding(
@@ -124,10 +118,7 @@ class _SignInState extends State<SignIn> {
 
   gotoHome(BuildContext context) => Navigator.of(context).pushReplacementNamed(
         Home.route,
-        arguments: {
-          name = _emailController.text,
-          email = _passwordController.text
-        },
+        arguments: _emailController.text,
       );
 
   void _validate() async {

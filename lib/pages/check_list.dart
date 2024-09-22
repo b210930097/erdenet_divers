@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class CheckListScreen extends StatefulWidget {
-  const CheckListScreen({super.key});
+  final String email;
+
+  const CheckListScreen({super.key, required this.email}); // Update constructor
 
   @override
   State<CheckListScreen> createState() => _CheckListScreenState();
@@ -42,10 +44,10 @@ class _CheckListScreenState extends State<CheckListScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
-                'Жолоочийн нэр..............\nОн сар..............\nТээврийн хэрэгслийн нэр....'),
+                'Жолоочийн мэйл: ${widget.email}\nОн сар..............\nТээврийн хэрэгслийн нэр....'),
           ),
           Expanded(
             child: ListView.builder(
