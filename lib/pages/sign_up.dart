@@ -35,7 +35,7 @@ class _SignUpState extends State<SignUp> {
           children: [
             Center(
               child: SizedBox(
-                child: Image.asset("assets/image/login.png"),
+                child: Image.asset("assets/background.jpg"),
               ),
             ),
             const Padding(

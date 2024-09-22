@@ -6,7 +6,6 @@ import 'package:erdenet_divers/components/button.dart';
 
 class Home extends StatefulWidget {
   static const route = '/home';
-  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
