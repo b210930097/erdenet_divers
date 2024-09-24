@@ -1,3 +1,4 @@
+import 'package:erdenet_divers/pages/face_detection.dart';
 import 'package:erdenet_divers/pages/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,10 +25,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/login': (context) => SignIn(),
-        '/home': (context) => Home(),
+        '/': (context) => FaceDetectionScreen(),
+        // '/login': (context) => SignIn(),
+        // '/home': (context) => Home(),
       },
-      initialRoute: '/login',
+      initialRoute: '/',
     );
   }
 }

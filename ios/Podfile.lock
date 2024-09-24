@@ -109,13 +109,37 @@ PODS:
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
   - GTMSessionFetcher/Core (3.5.0)
+  - LibTorch (1.8.0):
+    - LibTorch/Core (= 1.8.0)
+  - LibTorch/Core (1.8.0):
+    - LibTorch/Torch
+  - LibTorch/Torch (1.8.0)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - PromisesObjC (2.4.0)
+  - pytorch_mobile (0.0.1):
+    - Flutter
+    - LibTorch (~> 1.8.0)
   - RecaptchaInterop (100.0.0)
+  - TensorFlowLite (1.13.1)
+  - TensorFlowLiteC (2.17.0):
+    - TensorFlowLiteC/Core (= 2.17.0)
+  - TensorFlowLiteC/Core (2.17.0)
+  - TensorFlowLiteSwift (2.17.0):
+    - TensorFlowLiteSwift/Core (= 2.17.0)
+  - TensorFlowLiteSwift/Core (2.17.0):
+    - TensorFlowLiteC (= 2.17.0)
+    - TensorFlowLiteSwift/Privacy (= 2.17.0)
+  - TensorFlowLiteSwift/Privacy (2.17.0)
+  - tflite_flutter (0.1.0):
+    - Flutter
+    - TensorFlowLiteSwift
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
@@ -125,6 +149,10 @@ DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - pytorch_mobile (from `.symlinks/plugins/pytorch_mobile/ios`)
+  - TensorFlowLite
+  - tflite_flutter (from `.symlinks/plugins/tflite_flutter/ios`)
 
 SPEC REPOS:
   trunk:
@@ -140,9 +168,13 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleUtilities
     - GTMSessionFetcher
+    - LibTorch
     - nanopb
     - PromisesObjC
     - RecaptchaInterop
+    - TensorFlowLite
+    - TensorFlowLiteC
+    - TensorFlowLiteSwift
 
 EXTERNAL SOURCES:
   camera_avfoundation:
@@ -153,6 +185,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  pytorch_mobile:
+    :path: ".symlinks/plugins/pytorch_mobile/ios"
+  tflite_flutter:
+    :path: ".symlinks/plugins/tflite_flutter/ios"
 
 SPEC CHECKSUMS:
   camera_avfoundation: dd002b0330f4981e1bbcb46ae9b62829237459a4
@@ -171,10 +209,17 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 6e49ffac7d3f2c3ded9cc663f912a13b67bbd0de
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
+  LibTorch: d7724112589515bedd5eadf14a9db5b1d62d8a34
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  pytorch_mobile: cdb1566b9883c59662d443e904db6674e829dd84
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
+  TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
+  TensorFlowLiteC: eac6d689a8d391d1b202dc59e3d9165ba64aaf73
+  TensorFlowLiteSwift: 723fe42222815e72490c79feeff05305530de393
+  tflite_flutter: bf9c7d5c7ef011034c607d943d432623673c1c11
 
-PODFILE CHECKSUM: 1c3f327dd1fc3418af2c2e432177b9cf87c61e19
+PODFILE CHECKSUM: b103084fa9aa889724900d47a66a298dcf5d4fc6
 
 COCOAPODS: 1.15.2
