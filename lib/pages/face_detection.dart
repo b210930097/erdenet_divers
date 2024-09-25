@@ -1,10 +1,9 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
-import 'package:pytorch_mobile/pytorch_mobile.dart';
-import 'package:pytorch_mobile/model.dart';
-import 'dart:isolate';
+import 'package:pytorch_lite/pytorch_lite.dart';
 import 'dart:async';
+import 'dart:typed_data';
 
 class FaceDetectionScreen extends StatefulWidget {
   const FaceDetectionScreen({super.key});
@@ -16,9 +15,8 @@ class FaceDetectionScreen extends StatefulWidget {
 class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
   CameraController? _cameraController;
   bool _isCameraInitialized = false;
-
-  Interpreter? _tfliteInterpreter;
-  Model? _pyTorchModel;
+  String _drowsinessResult = "Detecting...";
+  ModelObjectDetection? _objectModel;
 
   @override
   void initState() {
@@ -31,12 +29,11 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
     try {
       final cameras = await availableCameras();
       final frontCamera = cameras.firstWhere(
-          (camera) => camera.lensDirection == CameraLensDirection.front,
-          orElse: () => throw Exception('No front camera available'));
+          (camera) => camera.lensDirection == CameraLensDirection.front);
 
       _cameraController = CameraController(
         frontCamera,
-        ResolutionPreset.high,
+        ResolutionPreset.low,
         enableAudio: false,
       );
 
@@ -47,9 +44,7 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
         _isCameraInitialized = true;
       });
 
-      _cameraController?.startImageStream((image) {
-        _runModelsOnFrame(image);
-      });
+      _startImageStream();
     } catch (e) {
       print('Error initializing camera: $e');
     }
@@ -57,71 +52,57 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
 
   Future<void> _loadModels() async {
     try {
-      _tfliteInterpreter = await Interpreter.fromAsset('best_float32.tflite');
-      print('TFLite model loaded.');
+      log('Starting to load the model');
+      _objectModel = await PytorchLite.loadObjectDetectionModel(
+        "assets/models/best.torchscript",
+        3,
+        640,
+        640,
+        labelPath: "assets/labels/text.txt",
+        objectDetectionModelType: ObjectDetectionModelType.yolov8,
+      );
+      log('Model loaded successfully');
     } catch (e) {
-      print('Error loading TFLite model: $e');
-    }
-
-    try {
-      _pyTorchModel = await PyTorchMobile.loadModel('best.pt');
-      print('PyTorch model loaded.');
-    } catch (e) {
-      print('Error loading PyTorch model: $e');
+      log('Error loading model: $e');
     }
   }
 
-  Future<void> _runModelsOnFrame(CameraImage image) async {
-    try {
-      if (_tfliteInterpreter != null) {
-        var input = _preprocessCameraImage(image);
-        var output = List.filled(1, 0).reshape([1]);
-        _tfliteInterpreter?.run(input, output);
-        print('TFLite Model Output: $output');
+  void _startImageStream() {
+    _cameraController?.startImageStream((CameraImage image) async {
+      if (_objectModel != null) {
+        await _analyzeCameraImage(image);
       }
-    } catch (e) {
-      print('Error running TFLite model: $e');
-    }
-
-    try {
-      if (_pyTorchModel != null) {
-        var input = _preprocessForPyTorch(image);
-        var imageWidth = image.width; // Get image width
-        var imageHeight = image.height; // Get image height
-
-        // Replace the double threshold with a String configuration
-        String config =
-            'your_configuration_string'; // Update this with the actual string needed
-        var output = await _pyTorchModel?.getImagePrediction(
-            input, // Preprocessed input tensor
-            imageWidth, // Image width
-            imageHeight, // Image height
-            config // Replace this with the actual required parameter as a String
-            );
-
-        print('PyTorch Model Output: $output');
-      }
-    } catch (e) {
-      print('Error running PyTorch model: $e');
-    }
+    });
   }
 
-  List<List<double>> _preprocessCameraImage(CameraImage image) {
-    // Convert CameraImage to model input format for TFLite
-    // This could involve resizing and normalizing the pixel values
-    return List.generate(
-        1, (_) => List.filled(1, 0.0)); // Placeholder for preprocessing
-  }
+  Future<void> _analyzeCameraImage(CameraImage image) async {
+    List<Uint8List> imageBytesList = image.planes.map((plane) {
+      return Uint8List.fromList(plane.bytes);
+    }).toList();
+    log('map done');
+    Uint8List imageBytes =
+        Uint8List.fromList(imageBytesList.expand((x) => x).toList());
+    log('list done');
 
-  dynamic _preprocessForPyTorch(CameraImage image) {
-    // Convert CameraImage to Tensor format for PyTorch
-    return image; // Placeholder: You need to convert the image to a tensor format as required by PyTorch
+    List<ResultObjectDetection> objDetect =
+        await _objectModel!.getImagePrediction(
+      imageBytes,
+      minimumScore: 0.1,
+      iOUThreshold: 0.3,
+    );
+
+    setState(() {
+      _drowsinessResult = objDetect.isNotEmpty
+          ? "Face Detected"
+          : "No Face Detected"; // Update the result based on detection
+    });
+    log(_drowsinessResult);
   }
 
   @override
   void dispose() {
-    _cameraController?.dispose();
-    _tfliteInterpreter?.close();
+    _cameraController?.stopImageStream(); // Stop the image stream
+    _cameraController?.dispose(); // Dispose of the camera controller
     super.dispose();
   }
 
@@ -129,15 +110,27 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Face Detection'),
+        title: const Text('Жолоодлого эхлүүлэх'), // App title
       ),
       body: _isCameraInitialized
-          ? SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: CameraPreview(_cameraController!),
+          ? Column(
+              children: [
+                Expanded(
+                  child: CameraPreview(
+                      _cameraController!), // Show the camera preview
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    _drowsinessResult,
+                    style: const TextStyle(
+                        fontSize: 24), // Display detection result
+                  ),
+                ),
+              ],
             )
-          : const Center(child: CircularProgressIndicator()),
+          : const Center(
+              child: CircularProgressIndicator()), // Show loading indicator
     );
   }
 }
