@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:erdenet_divers/home.dart';
-import 'package:erdenet_divers/pages/auth_service.dart';
+import 'package:erdenet_divers/config/firebase_service.dart';
 import 'package:erdenet_divers/pages/sign_up.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,7 +14,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final _auth = AuthService();
+  final _auth = FirestoreService();
 
   late final String? name;
   late final String? email;
@@ -56,8 +56,8 @@ class _SignInState extends State<SignIn> {
 
   _buildLoginForm() {
     return Container(
-      color: Color.fromARGB(150, 255, 255, 255),
-      width: double.infinity,
+      color: const Color.fromARGB(150, 255, 255, 255),
+      width: 500,
       height: 330,
       child: Form(
         key: _formKey,
@@ -66,7 +66,7 @@ class _SignInState extends State<SignIn> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Нэвтрэх'),
+              const Text('Нэвтрэх'),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Э-мэйл'),
@@ -97,9 +97,9 @@ class _SignInState extends State<SignIn> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Бүртгэл үүсгэх'),
+                  const Text('Бүртгэл үүсгэх'),
                   TextButton(
-                    child: Text(
+                    child: const Text(
                       'Бүртгүүлэх',
                     ),
                     onPressed: () {

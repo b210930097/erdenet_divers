@@ -13,13 +13,13 @@ dependencies:
 
   firebase_core: ^3.5.0
   firebase_auth: ^5.3.0
+  cloud_firestore: ^5.4.3
   cupertino_icons: ^1.0.6
   camera: ^0.11.0+2
   image_picker: ^1.1.2
   pytorch_lite: ^4.2.7
-  # tflite_flutter: ^0.9.5
-  # tflite_flutter_helper: ^0.2.1
-  # pytorch_mobile: ^0.2.2
+  audioplayers: ^6.1.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +31,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    # - assets/
+    - assets/answer.json
+    - assets/background.jpg
+    - assets/checkList.png
     - assets/models/best.torchscript
     - assets/labels/text.txt
+    - assets/distraction.mp3
+    - assets/drowsy.mp3

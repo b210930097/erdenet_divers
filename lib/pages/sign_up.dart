@@ -1,8 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:erdenet_divers/home.dart';
-import 'package:erdenet_divers/pages/auth_service.dart';
+import 'package:erdenet_divers/config/firebase_service.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -12,7 +11,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _auth = AuthService();
+  final _auth = FirestoreService();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -54,7 +53,7 @@ class _SignUpState extends State<SignUp> {
   _buildLoginForm() {
     return Container(
       color: Color.fromARGB(150, 255, 255, 255),
-      width: double.infinity,
+      width: 500,
       height: 340,
       child: Form(
         key: _formKey,

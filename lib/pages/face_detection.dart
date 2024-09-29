@@ -1,136 +1,85 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:pytorch_lite/pytorch_lite.dart';
-import 'dart:async';
-import 'dart:typed_data';
+import '../components/camera_view.dart';
+import '../components/box_widget.dart';
 
 class FaceDetectionScreen extends StatefulWidget {
-  const FaceDetectionScreen({super.key});
+  final String email;
+
+  const FaceDetectionScreen({Key? key, required this.email}) : super(key: key);
 
   @override
-  State<FaceDetectionScreen> createState() => _FaceDetectionScreenState();
+  _FaceDetectionScreenState createState() => _FaceDetectionScreenState();
 }
 
 class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
-  CameraController? _cameraController;
-  bool _isCameraInitialized = false;
-  String _drowsinessResult = "Detecting...";
-  ModelObjectDetection? _objectModel;
+  List<ResultObjectDetection>? results;
+  Duration? objectDetectionInferenceTime;
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeCamera();
-    _loadModels();
-  }
+  String? classification;
+  Duration? classificationInferenceTime;
 
-  Future<void> _initializeCamera() async {
-    try {
-      final cameras = await availableCameras();
-      final frontCamera = cameras.firstWhere(
-          (camera) => camera.lensDirection == CameraLensDirection.front);
-
-      _cameraController = CameraController(
-        frontCamera,
-        ResolutionPreset.low,
-        enableAudio: false,
-      );
-
-      await _cameraController?.initialize();
-      if (!mounted) return;
-
-      setState(() {
-        _isCameraInitialized = true;
-      });
-
-      _startImageStream();
-    } catch (e) {
-      print('Error initializing camera: $e');
-    }
-  }
-
-  Future<void> _loadModels() async {
-    try {
-      log('Starting to load the model');
-      _objectModel = await PytorchLite.loadObjectDetectionModel(
-        "assets/models/best.torchscript",
-        3,
-        640,
-        640,
-        labelPath: "assets/labels/text.txt",
-        objectDetectionModelType: ObjectDetectionModelType.yolov8,
-      );
-      log('Model loaded successfully');
-    } catch (e) {
-      log('Error loading model: $e');
-    }
-  }
-
-  void _startImageStream() {
-    _cameraController?.startImageStream((CameraImage image) async {
-      if (_objectModel != null) {
-        await _analyzeCameraImage(image);
-      }
-    });
-  }
-
-  Future<void> _analyzeCameraImage(CameraImage image) async {
-    List<Uint8List> imageBytesList = image.planes.map((plane) {
-      return Uint8List.fromList(plane.bytes);
-    }).toList();
-    log('map done');
-    Uint8List imageBytes =
-        Uint8List.fromList(imageBytesList.expand((x) => x).toList());
-    log('list done');
-
-    List<ResultObjectDetection> objDetect =
-        await _objectModel!.getImagePrediction(
-      imageBytes,
-      minimumScore: 0.1,
-      iOUThreshold: 0.3,
-    );
-
-    setState(() {
-      _drowsinessResult = objDetect.isNotEmpty
-          ? "Face Detected"
-          : "No Face Detected"; // Update the result based on detection
-    });
-    log(_drowsinessResult);
-  }
-
-  @override
-  void dispose() {
-    _cameraController?.stopImageStream(); // Stop the image stream
-    _cameraController?.dispose(); // Dispose of the camera controller
-    super.dispose();
-  }
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Жолоодлого эхлүүлэх'), // App title
+      key: scaffoldKey,
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: <Widget>[
+          CameraView(resultsCallback, resultsCallbackClassification),
+          boundingBoxes2(results),
+        ],
       ),
-      body: _isCameraInitialized
-          ? Column(
-              children: [
-                Expanded(
-                  child: CameraPreview(
-                      _cameraController!), // Show the camera preview
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    _drowsinessResult,
-                    style: const TextStyle(
-                        fontSize: 24), // Display detection result
-                  ),
-                ),
-              ],
-            )
-          : const Center(
-              child: CircularProgressIndicator()), // Show loading indicator
     );
+  }
+
+  Widget boundingBoxes2(List<ResultObjectDetection>? results) {
+    if (results == null) {
+      return Container();
+    }
+    return Stack(
+      children: results
+          .map((e) => BoxWidget(
+                result: e,
+                email: widget.email,
+              ))
+          .toList(),
+    );
+  }
+
+  void resultsCallback(
+      List<ResultObjectDetection> results, Duration inferenceTime) {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      this.results = results;
+      objectDetectionInferenceTime = inferenceTime;
+      for (var element in results) {
+        print({
+          "rect": {
+            "left": element.rect.left,
+            "top": element.rect.top,
+            "width": element.rect.width,
+            "height": element.rect.height,
+            "right": element.rect.right,
+            "bottom": element.rect.bottom,
+          },
+        });
+      }
+    });
+  }
+
+  void resultsCallbackClassification(
+      String classification, Duration inferenceTime) {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      this.classification = classification;
+      classificationInferenceTime = inferenceTime;
+    });
   }
 }

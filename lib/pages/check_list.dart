@@ -6,7 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class CheckListScreen extends StatefulWidget {
   final String email;
 
-  const CheckListScreen({super.key, required this.email}); // Update constructor
+  const CheckListScreen({super.key, required this.email});
 
   @override
   State<CheckListScreen> createState() => _CheckListScreenState();
@@ -35,6 +35,60 @@ class _CheckListScreenState extends State<CheckListScreen> {
     });
   }
 
+  int _calculateScore() {
+    int score = 0;
+
+    for (int i = 0; i < _tasks.length; i++) {
+      final task = _tasks[i];
+
+      if (task['isSelect']) {
+        if (task['selectedOption'] == task['correctAnswer']) {
+          score++;
+        }
+      } else {
+        if (task['completed'] == task['correct']) {
+          score++;
+        }
+      }
+    }
+
+    return score;
+  }
+
+  void _showScore() {
+    int score = _calculateScore();
+    int totalQuestions = _tasks.length;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Таны оноо'),
+          content:
+              Text('Та $totalQuestions асуултаас $score оноо авсан байна.'),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => FaceDetectionScreen(
+                            email: widget.email,
+                          )),
+                );
+                setState(() {});
+              },
+              child: const Text('Үргэжлүүлэх'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Хаах'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +99,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Text(
                 'Жолоочийн мэйл: ${widget.email}\nОн сар..............\nТээврийн хэрэгслийн нэр....'),
           ),
@@ -92,11 +146,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => const FaceDetectionScreen()),
-          );
-          setState(() {});
+          _showScore();
         },
         child: const Icon(Icons.check),
       ),

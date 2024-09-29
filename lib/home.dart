@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-
 import 'package:erdenet_divers/pages/check_list.dart';
 import 'package:erdenet_divers/components/button.dart';
 
@@ -42,8 +41,7 @@ class _HomeState extends State<Home> {
                   onTap: () async {
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                            CheckListScreen(email: email), // Pass email here
+                        builder: (context) => CheckListScreen(email: email),
                       ),
                     );
                     setState(() {});
